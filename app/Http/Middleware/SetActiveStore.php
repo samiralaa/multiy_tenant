@@ -20,7 +20,7 @@ class SetActiveStore
         $host = $request->getHost();
 
         $store = Store::where('domain', $host)->first();
-        
+     
       
         $databaseConfig = json_decode($store->database_config, true);
 

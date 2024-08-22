@@ -18,12 +18,12 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::middleware('setactivestore')->group(function () {
+// Route::middleware('setactivestore')->group(function () {
   
-    Route::get('products',[\App\Http\Controllers\Web\ProductController::class,'index']);
+//     Route::get('products',[\App\Http\Controllers\Web\ProductController::class,'index']);
 
 
-});
+// });
 
 Route::get('store',[\App\Http\Controllers\Web\ProductController::class,'allindex']);
 
