@@ -21,11 +21,11 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): View
-    {
-        return view('auth.register');
-    }
-
+   
+     public function index()
+     {
+        return response()->json(User::all());
+     }
     /**
      * Handle an incoming registration request.
      *
