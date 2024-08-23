@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Contact\ContactController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -28,4 +29,12 @@ Route::middleware('setactivestore')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
+    //contact 
+    Route::get('/contact', [ContactController::class, 'index']);
+    Route::post('/contact', [ContactController::class, 'store']);
+    Route::get('/contact/{id}', [ContactController::class, 'show']);
+    Route::delete('/contact/{id}', [ContactController::class, 'destroy']);
+    Route::put('/contact/{id}', [ContactController::class, 'update']);
 });
+
+

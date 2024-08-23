@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use App\Repositories\EloquentUserRepository;
+use App\Repositories\EloquentContactRepository;
+use Domain\Repositories\ContactRepositoryInterface;
 use Domain\Repositories\UserRepositoryInterface;
+
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(UserRepositoryInterface::class, EloquentUserRepository::class);
+        $this->app->bind(ContactRepositoryInterface::class, EloquentContactRepository::class);
     }
 
     /**
