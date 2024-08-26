@@ -48,12 +48,7 @@ class ContactController extends Controller
         return response()->json(['message' => 'Contact created successfully'], Response::HTTP_CREATED);
     }
 
-    /**
-     * Display the specified contact.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function show(int $id)
     {
         $contact = $this->contactRepository->findById($id);
@@ -65,14 +60,7 @@ class ContactController extends Controller
         return response()->json($contact, Response::HTTP_OK);
     }
 
-    /**
-     * Update the specified contact in storage.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(Request $request, int $id)
+        public function update(Request $request, int $id)
     {
         // Validate the request data
         $request->validate([

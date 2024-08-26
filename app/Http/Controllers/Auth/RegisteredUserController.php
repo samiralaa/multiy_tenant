@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Image;
 use App\Models\Store;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -31,12 +32,14 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
+        // Validate the request data
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Validate image if provided
         ]);
     
         DB::beginTransaction();
@@ -52,8 +55,20 @@ class RegisteredUserController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'store_id' => $store->id, // Assuming you have a store_id in users table
+                'store_id' => $store->id, // Assuming you have a store_id in the users table
             ]);
+    
+            // Check if an image file is present in the request
+            if ($request->hasFile('image')) {
+                // Store the image and get the path
+                $imagePath = $request->file('image')->store('images');
+    
+                // Create a new Image instance and associate it with the store
+                $image = new Image();
+                $image->url = $imagePath;
+                $image->store_id = $store->id; // Assuming you have a store_id in the images table
+                $image->save();
+            }
     
             DB::commit();
     
@@ -63,11 +78,12 @@ class RegisteredUserController extends Controller
             // Log in the newly created user
             Auth::login($user);
     
-            // Redirect to the dashboard route
-            return redirect()->route('dashboard', [], false); // absolute: false for relative URL
+            // Return a JSON response with the user and store data
+            return response()->json(['user' => $user, 'store' => $store], 201);
+    
         } catch (\Throwable $th) {
             DB::rollBack();
-            throw $th;
+            return response()->json(['error' => $th->getMessage()], 500);
         }
     }
 }

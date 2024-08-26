@@ -14,7 +14,6 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
         
     }
-
     public function index()
     {
         return $this->categoryService->getAll();
@@ -23,26 +22,6 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         return $this->categoryService->store($request);
-        
-
-        // return $operationSuccess ? $this->successResponse('Operation successful', 200) : $this->errorResponse('An error occurred', 500);
-        // return $this->successResponse('Operation successful', 200) ?? $this->errorResponse('An error occurred', 500);
-        // try {
-        //     // Some logic here
-        //     return $this->successResponse('Operation successful', 200);
-        // } catch (\Exception $e) {
-        //     return $this->errorResponse('An error occurred', 500);
-        // }
-        
-
-        // try {
-        //     // Some logic here
-        //     return $this->successResponse('Operation successful', 200);
-        // } catch (\Throwable $e) {
-        //     return $this->errorResponse('An error occurred', 500);
-        // }
-        
-
     }
 
     public function show($id)

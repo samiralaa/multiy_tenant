@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
+    
     protected $connection = 'tenant';
-    protected $fillable = ['name','description','image'];
+    protected $fillable = ['name','description'];
 
     public function products()
     {
@@ -21,5 +22,8 @@ class Category extends Model
         return $this->belongsTo(Store::class);
     }
 
-    
+    public function images()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
 }
