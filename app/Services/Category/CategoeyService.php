@@ -23,27 +23,26 @@ class CategoeyService
 
     public function getAll()
     {
-        $relatation = ['products'];
+        $relatation = ['projects', 'images'];
         return $this->getAllByRelation($relatation);
     }
 
     public function getOne($id)
     {
-       $category = $this->model->find($id);
-       $images = $category->images;
-       return response()->json($images);
+       $category = $this->model->with('images')->find($id);
+       return response()->json($category);
     }
 
     public function store($request)
     {
         // Create the main record
         $record = $this->model->create($request->all());
-    
+   
         // Check if an image was uploaded
         if ($request->hasFile('image')) {
 
             // Store the image and get the path
-            $imagePath = $request->file('image')->store('images');
+            $imagePath = $request->file('image')->store('categories');
     
             // Create a new Image instance and associate it with the record
             $image = new Image();
@@ -68,7 +67,15 @@ class CategoeyService
     public function destroy($id)
     {
         $record = $this->model->find($id);
-        $record->delete();
-        return $record;
+
+        if ($record) {
+            $record->delete();
+        } else {
+           return response()->json(['message' => 'Record not found'], 404);
+        }
+       
+       
     }
+
+
 }

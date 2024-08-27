@@ -1,7 +1,7 @@
 <?php
 
-namespace App\Models;
-
+namespace App\Models\Marketing;
+use App\Models\Image;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,8 +9,11 @@ class Project extends Model
 {
     use HasFactory;
     protected $connection = 'tenant';
-    protected $fillable = ['name', 'description', 'category_id'];
-
+    protected $table = 'marketing_project';
+    protected $fillable = [
+        'name',
+        'description',
+    ];
 
     public function category()
     {
