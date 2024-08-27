@@ -15,52 +15,53 @@ class EloquentProjectRepository implements ProjectRepositoryInterface
         return $eloquentProject ? $this->toDomain($eloquentProject) : null;
     }
 
-    public function save(Project $project): void
-    {
-        DB::transaction(function () use ($project) {
-            $eloquentProject = EloquentProject::find($project->getId());
-
-            if ($eloquentProject) {
-                $eloquentProject->update([
-                    'name' => $project->getName(),
-                    'description' => $project->getDescription(),
-                    'status' => $project->getStatus(),
-                    'start_date' => $project->getStartDate(),
-                    'end_date' => $project->getEndDate(),
-                ]);
-            } else {
-                EloquentProject::create([
-                    'name' => $project->getName(),
-                    'description' => $project->getDescription(),
-                    'status' => $project->getStatus(),
-                    'start_date' => $project->getStartDate(),
-                    'end_date' => $project->getEndDate(),
-                ]);
-            }
-        });
-    }
-
-    public function delete(int $id): void
-    {
-        EloquentProject::destroy($id);
-    }
-
-    public function findById(int $id): ?Project
-    {
-        return $this->find($id);
-    }
-
-    public function update(Project $project): void
-    {
-        $this->save($project);
-    }
-
-    public function findAll(): array
+    public function all(): array
     {
         $eloquentProjects = EloquentProject::all();
         return $eloquentProjects->map(function ($eloquentProject) {
             return $this->toDomain($eloquentProject);
         })->toArray();
+    }
+
+    public function create(Project $project): bool
+    {
+        $eloquentProject = new EloquentProject([
+            'name' => $project->getName(),
+            'description' => $project->getDescription(),
+            'status' => $project->getStatus(),
+            'start_date' => $project->getStartDate(),
+            'end_date' => $project->getEndDate(),
+        ]);
+
+        return $eloquentProject->save();
+    }
+
+    public function update(Project $project): bool
+    {
+        $eloquentProject = EloquentProject::find($project->getId());
+
+        if ($eloquentProject) {
+            $eloquentProject->name = $project->getName();
+            $eloquentProject->description = $project->getDescription();
+            $eloquentProject->status = $project->getStatus();
+            $eloquentProject->start_date = $project->getStartDate();
+            $eloquentProject->end_date = $project->getEndDate();
+
+            return $eloquentProject->save();
+        }
+
+        return false;
+    }
+
+    public function delete(int $id): bool
+    {
+        $eloquentProject = EloquentProject::find($id);
+
+        if ($eloquentProject) {
+            return $eloquentProject->delete();
+        }
+
+        return false;
     }
 
     private function toDomain(EloquentProject $eloquentProject): Project
