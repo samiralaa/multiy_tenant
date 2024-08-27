@@ -26,4 +26,6 @@ trait ApiResponseTrait
             'error' => $message,
         ], $status);
     }
+
+    
 }

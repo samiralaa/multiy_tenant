@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\Contact\ContactController;
+use App\Http\Controllers\Api\Project\ProjectController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Models\Marketing\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +42,16 @@ Route::middleware('setactivestore')->group(function () {
     Route::get('/category', [\App\Http\Controllers\Api\Category\CategoryController::class, 'index']);
     Route::post('/category', [\App\Http\Controllers\Api\Category\CategoryController::class, 'store']);
     Route::get('/category/{id}', [\App\Http\Controllers\Api\Category\CategoryController::class, 'show']);
-    Route::put('/category/{id}', [\App\Http\Controllers\Api\Category\CategoryController::class, 'update']);
+    Route::post('/category/{id}', [\App\Http\Controllers\Api\Category\CategoryController::class, 'update']);
     Route::delete('/category/{id}', [\App\Http\Controllers\Api\Category\CategoryController::class, 'destroy']);
 });
+
+
+Route::controller(ProjectController::class)->group(function () {
+    Route::get('/projects', 'index');
+    Route::post('/projects', 'store');
+    Route::get('/projects/{id}','show');
+    Route::put('/projects/{id}', 'update');
+    Route::delete('/projects/{id}', 'destroy');
+});
+

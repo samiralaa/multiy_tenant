@@ -78,5 +78,7 @@ trait CrudTrait
     {
         return $this->model->withTrashed()->with($relation)->find($id);
     }
+
+    
     
 }

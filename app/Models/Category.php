@@ -26,4 +26,11 @@ class Category extends Model
     {
         return $this->morphOne(Image::class, 'imageable');
     }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
+
+
 }

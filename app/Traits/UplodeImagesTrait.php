@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Traits;
 
 trait UplodeImagesTrait
@@ -15,11 +16,10 @@ trait UplodeImagesTrait
 
     public function deleteImages($model, $column)
     {
-        if (isset($model->$column) && file_exists(public_path('uploads/'.$model->$column))) {
-            unlink(public_path('uploads/'.$model->$column));
+        // التأكد من أن الصورة القديمة موجودة وحذفها
+        if (isset($model->$column) && file_exists(public_path('uploads/' . $model->$column))) {
+            unlink(public_path('uploads/' . $model->$column));
             $model->$column = null;
         }
     }
-
-    
 }
