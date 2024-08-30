@@ -8,7 +8,7 @@ interface ProjectRepositoryInterface
 {
     public function find(int $id): ?Project;
 
-    public function all(): array;
+    public function getAll(): array;
 
     public function create(Project $project): bool;
 

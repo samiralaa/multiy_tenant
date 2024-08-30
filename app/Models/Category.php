@@ -12,15 +12,6 @@ class Category extends Model
     protected $connection = 'tenant';
     protected $fillable = ['name','description'];
 
-    public function products()
-    {
-        return $this->hasMany(Product::class);
-    }
-
-    public function store()
-    {
-        return $this->belongsTo(Store::class);
-    }
 
     public function images()
     {

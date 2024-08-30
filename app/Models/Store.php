@@ -11,11 +11,7 @@ class Store extends Model
 
     protected $fillable = ['name', 'domain', 'database_config'];
 
-    public function products()
-    {
-        return $this->hasMany(Product::class);
-    }
-
+   
     public function categories()
     {
         return $this->hasMany(Category::class);

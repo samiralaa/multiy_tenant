@@ -6,14 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 trait CrudTrait
 {
-  private $model;
+    private $model;
 
-    public function __construct(Model $model) {
+    public function __construct(Model $model)
+    {
         $this->model = $model;
     }
-    public function index()
+    public function index($model, $select)
     {
-        return $this->model->all();    
+        return $model->select($select)->get();
     }
 
     public function store(array $data)
@@ -21,50 +22,36 @@ trait CrudTrait
         return $this->model->create($data);
     }
 
-    public function show($id)
+    public function show($model, $id, $select)
     {
-        return $this->model->find($id);
+        return $model->select($select)->find($id);
     }
 
-    public function update(array $data, $id)
+    public function update($id, array $data)
     {
-        $record = $this->model->find($id); 
-        $record->update($data);
-        return $record;
-    }   
+        $model = $this->model->find($id);
 
-    public function destroy($id)
+        if (!$model) {
+            return false; // or throw an exception, or handle it however you'd like
+        }
+
+        $model->update($data);
+
+        return $model;
+    }
+
+
+    public function delete($id)
     {
         $record = $this->model->find($id);
         $record->delete();
         return $record;
     }
 
-    public function restore($id)
-    {
-        $record = $this->model->withTrashed()->find($id);
-        $record->restore();
-        return $record;
-    }
 
-    public function forceDelete($id)
-    {
-        $record = $this->model->withTrashed()->find($id);
-        $record->forceDelete();
-        return $record;
-    }
 
-    public function restoreAll()
-    {
-        $this->model->withTrashed()->restore();
-    }
 
-    public function forceDeleteAll()
-    {
-        $this->model->withTrashed()->forceDelete();
-    }
-
-   public function getAllByRelation($relation)
+    public function getAllByRelation($relation)
     {
         return $this->model->with($relation)->get();
     }
@@ -74,11 +61,13 @@ trait CrudTrait
         return $this->model->with($relation)->find($id);
     }
 
-   public function getOneByRelationWithTrashed($relation, $id)
+    public function getBySelect($select, $model)
     {
-        return $this->model->withTrashed()->with($relation)->find($id);
+        return $model->select($select)->get();
     }
 
-    
-    
+    public function getOneBySelect($select, $id)
+    {
+        return $this->model->select($select)->find($id);
+    }
 }
