@@ -55,6 +55,6 @@ Route::post('password/confirm', [ConfirmablePasswordController::class, 'confirm'
                 ->name('password.confirm.token');
 
     Route::get('profile', function () {
-        //
+        
     })->name('profile.show');
 });
