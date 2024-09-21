@@ -77,4 +77,6 @@ Route::middleware('setactivestore')->group(function () {
         Route::post('/social-media-links/{id}', 'update');
         Route::delete('/social-media-links/{id}', 'destroy');
     });
+
+    
 });

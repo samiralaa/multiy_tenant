@@ -1,26 +1,32 @@
 <?php
+
 namespace Domain\Entities;
+use Spatie\Translatable\HasTranslations;
 
 class Project
 {
+    use HasTranslations;
+
     private $id;
-    private $name;
-    private $description;
+    private $name; // Should be an array for translations
+    private $description; // Should be an array for translations
     private $status;
     private $created_at;
     private $updated_at;
     private $category_id;
-    private $images; // Array of image URLs
+    private $images;
+
+    public $translatable = ['name', 'description'];
 
     public function __construct(
         int $id,
-        string $name,
-        string $description,
+        array $name,
+        array $description,
         string $status,
-        int $category_id, // Ensure category_id is an integer
+        int $category_id,
         \DateTime $created_at,
         \DateTime $updated_at,
-        array $images = [] // Initialize images as an array
+        array $images = []
     ) {
         $this->id = $id;
         $this->name = $name;
@@ -37,12 +43,12 @@ class Project
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): array
     {
         return $this->name;
     }
 
-    public function getDescription(): string
+    public function getDescription(): array
     {
         return $this->description;
     }
@@ -72,12 +78,13 @@ class Project
         return $this->images;
     }
 
-    public function setName(string $name): void
+    // Setter methods for mutable properties
+    public function setName(array $name): void // Accept array for translations
     {
         $this->name = $name;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(array $description): void // Accept array for translations
     {
         $this->description = $description;
     }

@@ -14,18 +14,19 @@ class ProjectRequest extends FormRequest
         return true;
     }
 
-    public function rules(): array
+    public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category_id' => 'required|int|exists:tenant.categories,id', // Ensure category_id exists in tenant.categories
-            'status' => 'required|in:pending,active,completed',
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validation for each image
+            'name_en' => 'required|string',
+            'name_ar' => 'required|string',
+            'description_en' => 'required|string',
+            'description_ar' => 'required|string',
+            'status' => 'required|string',
+            'category_id' => 'required|integer',
+            'images' => 'array', // Ensure images are handled as an array
         ];
     }
-
+    
 
    
 }

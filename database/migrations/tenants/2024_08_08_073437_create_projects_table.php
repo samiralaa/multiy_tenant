@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description')->nullable();
-            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
-            $table->string('status')->default('active');
+            $table->json('name'); // Assuming you're using JSON for translations
+            $table->json('description'); // Same for description
+            $table->string('status');
+            $table->unsignedBigInteger('category_id');
             $table->timestamps();
         });
+        
     }
 
     /**

@@ -6,27 +6,38 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Setting\StoreSocialMediaRequest;
 use App\Http\Requests\Setting\UpdateSocialMediaRequest;
 use App\Services\Setting\SocialMediaService;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class SocialMediaController extends Controller
 {
+    protected SocialMediaService $socialMediaService;
 
-    protected $socialMediaLinkService;
-
-    public function __construct(SocialMediaService $socialMediaLinkService)
+    public function __construct(SocialMediaService $socialMediaService)
     {
-        $this->socialMediaLinkService = $socialMediaLinkService;
+        $this->socialMediaService = $socialMediaService;
     }
 
-    public function index()
+    /**
+     * Display a listing of social media links.
+     *
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
     {
-        $socialMediaLinks = $this->socialMediaLinkService->getAllSocialMedia();
+       
+        $socialMediaLinks = $this->socialMediaService->getAllSocialMedia();
         return response()->json($socialMediaLinks);
     }
 
-    public function show($id)
+    /**
+     * Display the specified social media link.
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function show(int $id): JsonResponse
     {
-        $socialMediaLink = $this->socialMediaLinkService->getSocialMediaById($id);
+        $socialMediaLink = $this->socialMediaService->getSocialMediaById($id);
 
         if (!$socialMediaLink) {
             return response()->json(['message' => 'Social media link not found'], 404);
@@ -35,31 +46,49 @@ class SocialMediaController extends Controller
         return response()->json($socialMediaLink);
     }
 
-    public function store(StoreSocialMediaRequest $request)
+    /**
+     * Store a newly created social media link.
+     *
+     * @param StoreSocialMediaRequest $request
+     * @return JsonResponse
+     */
+    public function store(StoreSocialMediaRequest $request): JsonResponse
     {
         $data = $request->validated();
-
-        $socialMediaLink = $this->socialMediaLinkService->createSocialMedia($data);
+        $socialMediaLink = $this->socialMediaService->createSocialMedia($data);
 
         return response()->json($socialMediaLink, 201);
     }
 
-    public function update(UpdateSocialMediaRequest $request, $id)
+    /**
+     * Update the specified social media link.
+     *
+     * @param UpdateSocialMediaRequest $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function update(UpdateSocialMediaRequest $request, int $id): JsonResponse
     {
-        $data = $request->all(); 
+        $data = $request->validated();
 
-        $socialMediaLink = $this->socialMediaLinkService->updateSocialMedia($id, $data);
-    
+        $socialMediaLink = $this->socialMediaService->updateSocialMedia($id, $data);
+
         if (!$socialMediaLink) {
             return response()->json(['message' => 'Social media link not found or update failed'], 404);
         }
-    
+
         return response()->json($socialMediaLink);
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified social media link.
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function destroy(int $id): JsonResponse
     {
-        $deleted = $this->socialMediaLinkService->deleteSocialMedia($id);
+        $deleted = $this->socialMediaService->deleteSocialMedia($id);
 
         if (!$deleted) {
             return response()->json(['message' => 'Social media link not found or delete failed'], 404);

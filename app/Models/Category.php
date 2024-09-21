@@ -12,7 +12,7 @@ class Category extends Model
     protected $connection = 'tenant';
     protected $fillable = ['name','description'];
 
-
+    
     public function images()
     {
         return $this->morphOne(Image::class, 'imageable');

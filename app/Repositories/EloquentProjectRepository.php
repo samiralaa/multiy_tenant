@@ -40,16 +40,13 @@ class EloquentProjectRepository implements ProjectRepositoryInterface
             'category_id' => $project->getCategoryId(),
         ]);
 
-        // Save the project first to get the ID
         if ($eloquentProject->save()) {
-            // Handle image uploads
             $this->saveImages($eloquentProject, $project->getImages());
             return true;
         }
 
         return false;
     }
-
     public function update(Project $project): bool
     {
         $eloquentProject = EloquentProject::find($project->getId());
