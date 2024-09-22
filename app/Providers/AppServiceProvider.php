@@ -7,7 +7,9 @@ use App\Repositories\EloquentProjectRepository;
 use App\Repositories\EloquentRequestPriceRepository;
 use App\Repositories\EloquentUserRepository;
 
+use App\Repositories\Invoice\EloquentInvoiceRepository;
 use Domain\Repositories\ContactRepositoryInterface;
+use Domain\Repositories\Invoice\InvoiceRepositoryInterface;
 use Domain\Repositories\ProjectRepositoryInterface;
 use Domain\Repositories\RequestPriceRepositoryInterface;
 use Domain\Repositories\UserRepositoryInterface;
@@ -24,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ContactRepositoryInterface::class, EloquentContactRepository::class);
         $this->app->bind(ProjectRepositoryInterface::class, EloquentProjectRepository::class);
         $this->app->bind(RequestPriceRepositoryInterface::class, EloquentRequestPriceRepository::class);
+        $this->app->bind(InvoiceRepositoryInterface::class, EloquentInvoiceRepository::class);
 
     }
 
