@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Category\CategoryController;
 use App\Http\Controllers\Api\Contact\ContactController;
 use App\Http\Controllers\Api\Project\ProjectController;
+use App\Http\Controllers\Api\RequestPrice\RequestPriceController;
 use App\Http\Controllers\Api\Setting\SocialMediaController;
 use App\Http\Controllers\Api\Setting\SocialMediaLinksController;
 use App\Http\Controllers\Api\UserController;
@@ -78,5 +79,11 @@ Route::middleware('setactivestore')->group(function () {
         Route::delete('/social-media-links/{id}', 'destroy');
     });
 
-    
+   Route::controller(RequestPriceController::class)->group(function () {
+        Route::get('/request-price', 'index');
+        Route::post('/request-price','store');
+        Route::get('/request-price/{id}','show');
+        Route::post('/request-price/{id}', 'update');
+        Route::delete('/request-price/{id}', 'destroy');
+   });
 });
