@@ -17,6 +17,12 @@ class RequestPriceController extends Controller
         $this->repository = $repository;
     }
 
+    public function index(): JsonResponse
+    {
+        $requestPrices = $this->repository->all();
+
+        return response()->json($requestPrices);
+    }
     public function store(RequestPriceRequest $request): JsonResponse
     {
         $requestPrice = new \Domain\Entities\RequestPrice(
@@ -31,7 +37,7 @@ class RequestPriceController extends Controller
         );
 
         $savedRequestPrice = $this->repository->save($requestPrice);
-
+return response()->json(['message' => 'Request created successfully'], 201);
         return response()->json($savedRequestPrice, 201);
     }
 

@@ -7,8 +7,17 @@ use Domain\Entities\RequestPrice;
 
 use Domain\Repositories\RequestPriceRepositoryInterface;
 
-class RequestPriceRepository implements RequestPriceRepositoryInterface
+class EloquentRequestPriceRepository implements RequestPriceRepositoryInterface
 {
+
+    public function all(): array
+{
+    // Fetch all RequestPrice records as an array
+    $eloquentRequestPrices = EloquentRequestPrice::all()->toArray();
+
+    return $eloquentRequestPrices;
+}
+
     public function save(RequestPrice $requestPrice): RequestPrice
     {
         $eloquentRequestPrice = new EloquentRequestPrice([

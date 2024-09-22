@@ -10,4 +10,5 @@ interface RequestPriceRepositoryInterface
     public function findById(int $id): ?RequestPrice;
     public function update(RequestPrice $requestPrice): bool;
     public function delete(int $id): bool;
+    public function all(): array;
 }
