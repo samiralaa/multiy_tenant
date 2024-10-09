@@ -27,11 +27,7 @@ class RegisteredUserController extends Controller
      {
         return response()->json(User::all());
      }
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
+   
     public function store(Request $request)
     {
         // Validate the request data
@@ -60,10 +56,8 @@ class RegisteredUserController extends Controller
     
             // Check if an image file is present in the request
             if ($request->hasFile('image')) {
-                // Store the image and get the path
+              
                 $imagePath = $request->file('image')->store('images');
-    
-                // Create a new Image instance and associate it with the store
                 $image = new Image();
                 $image->url = $imagePath;
                 $image->store_id = $store->id; // Assuming you have a store_id in the images table
@@ -75,8 +69,8 @@ class RegisteredUserController extends Controller
             // Dispatch an event after successful creation
             event(new \App\Events\StoreCreated($store));
     
-            // Log in the newly created user
-            Auth::login($user);
+            // // Log in the newly created user if in web 
+            // Auth::login($user);
     
             // Return a JSON response with the user and store data
             return response()->json(['user' => $user, 'store' => $store], 201);
