@@ -22,12 +22,17 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-   
-     public function index()
-     {
-        return response()->json(User::all());
-     }
-   
+
+    public function index()
+    {
+        // get data by Query Builder
+        $users = DB::table('users')
+            // ->join('stores','stores.id', '=', 'users.store_id')
+            ->select('users.*', 'stores.name as store_name')
+            ->latest()
+            ->get();
+    }
+
     public function store(Request $request)
     {
         // Validate the request data
@@ -37,7 +42,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Validate image if provided
         ]);
-    
+
         DB::beginTransaction();
         try {
             // Create the store
@@ -45,7 +50,7 @@ class RegisteredUserController extends Controller
                 'name' => $request->name,
                 'domain' => Str::slug($request->name),
             ]);
-    
+
             // Create the user associated with the store
             $user = User::create([
                 'name' => $request->name,
@@ -53,28 +58,27 @@ class RegisteredUserController extends Controller
                 'password' => Hash::make($request->password),
                 'store_id' => $store->id, // Assuming you have a store_id in the users table
             ]);
-    
+
             // Check if an image file is present in the request
             if ($request->hasFile('image')) {
-              
+
                 $imagePath = $request->file('image')->store('images');
                 $image = new Image();
                 $image->url = $imagePath;
                 $image->store_id = $store->id; // Assuming you have a store_id in the images table
                 $image->save();
             }
-    
+
             DB::commit();
-    
+
             // Dispatch an event after successful creation
             event(new \App\Events\StoreCreated($store));
-    
+
             // // Log in the newly created user if in web 
             // Auth::login($user);
-    
+
             // Return a JSON response with the user and store data
             return response()->json(['user' => $user, 'store' => $store], 201);
-    
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json(['error' => $th->getMessage()], 500);
