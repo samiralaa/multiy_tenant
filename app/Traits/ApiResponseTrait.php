@@ -26,6 +26,7 @@ trait ApiResponseTrait
             'error' => $message,
         ], $status);
     }
+// use overriting polimorphism to implement the trait in other classes
 
     
 }

@@ -66,24 +66,24 @@ Route::middleware('setactivestore')->group(function () {
     Route::controller(SocialMediaController::class)->group(function () {
         Route::get('/social-media', 'index');
         Route::post('/social-media', 'store');
-        Route::get('/social-media/{id}','show');
+        Route::get('/social-media/{id}', 'show');
         Route::post('/social-media/{id}', 'update');
         Route::delete('/social-media/{id}', 'destroy');
     });
 
     Route::controller(SocialMediaLinksController::class)->group(function () {
         Route::get('/social-media-links', 'index');
-        Route::post('/social-media-links','store');
-        Route::get('/social-media-links/{id}','show');
+        Route::post('/social-media-links', 'store');
+        Route::get('/social-media-links/{id}', 'show');
         Route::post('/social-media-links/{id}', 'update');
         Route::delete('/social-media-links/{id}', 'destroy');
     });
 
-   Route::controller(RequestPriceController::class)->group(function () {
+    Route::controller(RequestPriceController::class)->group(function () {
         Route::get('/request-price', 'index');
-        Route::post('/request-price','store');
-        Route::get('/request-price/{id}','show');
+        Route::post('/request-price', 'store');
+        Route::get('/request-price/{id}', 'show');
         Route::post('/request-price/{id}', 'update');
         Route::delete('/request-price/{id}', 'destroy');
-   });
+    });
 });
